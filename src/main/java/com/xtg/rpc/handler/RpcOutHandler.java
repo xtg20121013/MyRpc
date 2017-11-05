@@ -15,15 +15,17 @@ public class RpcOutHandler extends ChannelOutboundHandlerAdapter {
 
     @Override
     public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
-        log.info("write a body, {}", msg);
+        log.info("【构建协议消息】准备发送:{}", msg);
         if(msg instanceof Invoker){
             Invoker invoker = (Invoker) msg;
             Message message = null;
             if(invoker.getMessageType() == MessageType.REQUEST ){
                 message = buildRequestMessage(invoker);
+                log.info("【构建协议消息】先将请求的invoker转化为message,{}", message);
             }
             if(invoker.getMessageType() == MessageType.RESPONSE){
                 message = buildResponseMessage(invoker);
+                log.info("【构建协议消息】先将响应的invoker转化为message,{}", message);
             }
             ctx.write(message, promise);
         }else {
@@ -42,7 +44,7 @@ public class RpcOutHandler extends ChannelOutboundHandlerAdapter {
         header.setMethod(invoker.getMethod());
         header.setType(MessageType.REQUEST);
         header.setLength(length);
-        header.setSessionId("xxxxx");
+        header.setRequestId(invoker.getRequestId());
         message.setHeader(header);
         return message;
     }
@@ -58,7 +60,7 @@ public class RpcOutHandler extends ChannelOutboundHandlerAdapter {
         header.setMethod(invoker.getMethod());
         header.setType(MessageType.RESPONSE);
         header.setLength(length);
-        header.setSessionId("xxxxx");
+        header.setRequestId(invoker.getRequestId());
         message.setHeader(header);
         return message;
     }

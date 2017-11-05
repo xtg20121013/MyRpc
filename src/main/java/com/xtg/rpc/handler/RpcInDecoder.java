@@ -13,11 +13,12 @@ public class RpcInDecoder extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if(msg instanceof ByteBuf) {
+            log.info("【反序列化】channel收到字节流。");
             ByteBuf buf = (ByteBuf) msg;
             byte[] bytes = new byte[buf.readableBytes()];
             buf.readBytes(bytes);
             Message message = (Message) HessianSerializeUtils.deserialize(bytes);
-            log.info("receive a new message: {}", message);
+            log.info("【反序列化】反序列化后的得到{}", message);
             ctx.fireChannelRead(message);
         }else {
             ctx.fireChannelRead(msg);

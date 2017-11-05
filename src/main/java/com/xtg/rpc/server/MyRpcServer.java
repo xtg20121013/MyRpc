@@ -31,12 +31,12 @@ public class MyRpcServer {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             //读
-                            ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(65535, 0, 2, 0, 2));
+                            ch.pipeline().addLast(new LengthFieldDecoder());
                             ch.pipeline().addLast(new RpcInDecoder());
                             ch.pipeline().addLast(new RpcInHandler());
                             ch.pipeline().addLast(new RpcInInvoker());
                             //写
-                            ch.pipeline().addLast(new LengthFieldPrepender(2));
+                            ch.pipeline().addLast(new LengthFieldEncoder());
                             ch.pipeline().addLast(new RpcOutEncoder());
                             ch.pipeline().addLast(new RpcOutHandler());
                         }

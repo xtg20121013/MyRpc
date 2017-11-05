@@ -11,7 +11,7 @@ public class Header implements Serializable{
 
     private Long length;
     private MessageType type;
-    private String sessionId;
+    private String requestId;
     private String service;
     private String method;
 

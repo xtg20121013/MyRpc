@@ -15,6 +15,7 @@ public class RpcOutEncoder extends ChannelOutboundHandlerAdapter {
     @Override
     public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
         if(msg instanceof Message) {
+            log.info("【序列化】将message转化为字节流，发送到channel传输，{}", msg);
             ByteBuf byteBuf = convertObj2Buf(msg);
             ctx.write(byteBuf, promise);
         }else {

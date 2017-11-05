@@ -2,11 +2,13 @@ package com.xtg.rpc.serialize;
 
 import com.caucho.hessian.io.HessianInput;
 import com.caucho.hessian.io.HessianOutput;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+@Slf4j
 public class HessianSerializeUtils {
 
     public static byte[] serialize(Object obj) {
@@ -17,6 +19,7 @@ public class HessianSerializeUtils {
         HessianOutput hessianOutput = new HessianOutput(os);
         try {
             hessianOutput.writeObject(obj);
+            log.info("【序列化】通过hessian将message序列化为byteArray,{}", obj);
             return os.toByteArray();
         }catch (Exception e){
             return null;
@@ -30,17 +33,12 @@ public class HessianSerializeUtils {
         ByteArrayInputStream is = new ByteArrayInputStream(bytes);
         HessianInput hessianInput = new HessianInput(is);
         try {
-            return hessianInput.readObject();
+            Object obj = hessianInput.readObject();
+            log.info("【反序列化】通过hessian将byteArray反序列化为{}", obj);
+            return obj;
         }catch (Exception e){
             return null;
         }
-    }
-
-    public static void main(String[] args) throws IOException {
-        String[] strings = new String[]{"hello", "java", "world"};
-        byte[] bytes = serialize(strings);
-        Object obj = deserialize(bytes);
-        System.out.println(obj);
     }
 
 }
