@@ -45,7 +45,7 @@ public class MyRpcClient {
                         }
                     });
             ChannelFuture future = bootstrap.connect(host, port).sync();
-            log.info("【服务发现】发现服务{}，注册服务地址{}:{}", serviceName, host, port);
+            log.info("【服务注册】注册服务{}，注册服务地址{}:{}", serviceName, host, port);
             ServiceChannelPool.register(serviceName, future.channel());
         }catch (Exception e){
             log.warn("error!", e);

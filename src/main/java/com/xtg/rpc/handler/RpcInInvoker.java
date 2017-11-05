@@ -62,7 +62,7 @@ public class RpcInInvoker extends ChannelInboundHandlerAdapter {
             invoker.setMessageType(MessageType.RESPONSE);
             log.info("【服务调用】将服务端执行后得到的带response的invoker写入channel，准备返回给客户端，{}", invoker);
             channel.writeAndFlush(invoker);
-        }, "<服务端调用服务线程>").start();
+        }, "<服务端处理服务线程>").start();
     }
 
 }
